@@ -6,7 +6,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ViewModel="clr-namespace:M3ultitool.ViewModel" x:Class="M3ultitool.MainWindow"
         mc:Ignorable="d"
-        Title="{Binding FullPath, Mode=OneWay}" Height="350" Width="525">
+        Height="350" Width="525">
+    <Window.Resources>
+        <ViewModel:AppTitleConverter x:Key="AppTitleConverter"/>
+    </Window.Resources>
+    <Window.Title>
+        <Binding Converter="{StaticResource AppTitleConverter}" Mode="OneWay"/>
+    </Window.Title>
 
     <Window.DataContext>
         <ViewModel:PlaylistViewModel x:Name="mainPlaylist"/>
@@ -15,18 +21,18 @@
     <Grid>
         <DockPanel>
             <Menu DockPanel.Dock="Top">
-                <MenuItem x:Name="menuFile" Header="File">
-                    <MenuItem x:Name="menuNew" Header="New"/>
-                    <MenuItem x:Name="menuOpen" Header="Open"/>
-                    <MenuItem x:Name="menuSave" Header="Save"/>
-                    <MenuItem x:Name="menuSaveAs" Header="Save As"/>
-                    <MenuItem x:Name="menuQuit" Header="Exit"/>
+                <MenuItem Header="File">
+                    <MenuItem Header="New" Click="OnClickNew"/>
+                    <MenuItem Header="Open" Click="OnClickOpen"/>
+                    <MenuItem Header="Save" Click="OnClickSave"/>
+                    <MenuItem Header="Save As" Click="OnClickSaveAs"/>
+                    <MenuItem Header="Exit" Click="OnClickQuit"/>
                 </MenuItem>
             </Menu>
         </DockPanel>
 
 
-        <ListView x:Name="playlistEditor" ItemsSource="{Binding Items}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" Margin="0,24,0,0">
+        <ListView x:Name="playlistEditor" ItemsSource="{Binding Items}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{Binding}" Margin="0,24,0,0" KeyDown="OnDeleteDown">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Title, Mode=OneWay}" Header="Title"/>
