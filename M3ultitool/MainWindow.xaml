@@ -1,12 +1,43 @@
-﻿<Window x:Class="M3ultitool.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:M3ultitool"
+        xmlns:ViewModel="clr-namespace:M3ultitool.ViewModel" x:Class="M3ultitool.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="{Binding FullPath, Mode=OneWay}" Height="350" Width="525">
+
+    <Window.DataContext>
+        <ViewModel:PlaylistViewModel x:Name="mainPlaylist"/>
+    </Window.DataContext>
+
     <Grid>
-        
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem x:Name="menuFile" Header="File">
+                    <MenuItem x:Name="menuNew" Header="New"/>
+                    <MenuItem x:Name="menuOpen" Header="Open"/>
+                    <MenuItem x:Name="menuSave" Header="Save"/>
+                    <MenuItem x:Name="menuSaveAs" Header="Save As"/>
+                    <MenuItem x:Name="menuQuit" Header="Exit"/>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+
+
+        <ListView x:Name="playlistEditor" ItemsSource="{Binding Items}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" Margin="0,24,0,0">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Title, Mode=OneWay}" Header="Title"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Album, Mode=OneWay}" Header="Album"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Artists, Mode=OneWay}" Header="Artists"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Genres, Mode=OneWay}" Header="Genres"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Comment, Mode=OneWay}" Header="Comments"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding FullPath, Mode=OneWay}" Header="Path"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
     </Grid>
 </Window>

@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using M3ultitool.Model;
+using M3ultitool.ViewModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace M3ultitool
 {
@@ -23,6 +12,12 @@ namespace M3ultitool
         public MainWindow()
         {
             InitializeComponent();
+            for(int i=0; i<10; ++i)
+            {
+                mainPlaylist.Model.Items.Add(new PlaylistItem("./test" + i + ".mp3"));
+            }
+            mainPlaylist.Items.Refresh(x => new PlaylistItemViewModel(x));
         }
+
     }
 }
