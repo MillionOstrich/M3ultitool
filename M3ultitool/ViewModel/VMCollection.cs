@@ -19,10 +19,11 @@ namespace M3ultitool.ViewModel
             remove { base.CollectionChanged -= value; }
         }
 
-        public VMCollection(ICollection<T> collection) : base()
+        public VMCollection(ICollection<T> collection, Func<T, TViewModel> construct) : base()
         {
             _updating = false;
             _innerCollection = collection ?? throw new ArgumentNullException();
+            foreach (T x in collection) { Add(construct(x)); }
             CollectionChanged += HandleCollectionChanged;
         }
 
