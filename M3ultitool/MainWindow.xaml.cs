@@ -44,37 +44,6 @@ namespace M3ultitool
             };
         }
 
-        private bool CheckUnsavedChanges()
-        {
-            if(mainPlaylist.UnsavedChanges)
-            {
-                MessageBoxResult result = MessageBox.Show("Do you want to save changes?", "Unsaved Changes", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-                if(result == MessageBoxResult.Yes)
-                {
-                    return SaveChanges(false);
-                }
-                else
-                {
-                    return result == MessageBoxResult.No;
-                }
-            }
-            return true;
-        }
-
-        private bool SaveChanges(bool _saveAs)
-        {
-            bool exists = mainPlaylist.FullPath != null && File.Exists(mainPlaylist.FullPath);
-            if (!exists || _saveAs)
-            {
-                _saveDialog.FileName = mainPlaylist.FullPath;
-                bool? result = _saveDialog.ShowDialog();
-                if(result != true) { return false; }
-                mainPlaylist.FullPath = _saveDialog.FileName;
-            }
-            mainPlaylist.UnsavedChanges = false;
-            return true;
-        }
-
         private void OnClickNew(object sender, RoutedEventArgs e)
         {
             if(CheckUnsavedChanges())
@@ -88,9 +57,18 @@ namespace M3ultitool
             if (CheckUnsavedChanges())
             {
                 bool? opened = _openDialog.ShowDialog();
-                if(opened == true)
+                if (opened == true)
                 {
-                    //TODO
+                    try
+                    {
+                        var playlist = ReadPlaylist(_openDialog.FileName);
+                        mainPlaylist = new PlaylistViewModel(playlist);
+                        DataContext = mainPlaylist;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error loading playlist", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
         }
@@ -120,6 +98,76 @@ namespace M3ultitool
                 var toDelete = new List<PlaylistItemViewModel>(lv.SelectedItems.Count);
                 foreach (PlaylistItemViewModel vm in lv.SelectedItems) { toDelete.Add(vm); }
                 foreach (PlaylistItemViewModel vm in toDelete) { collection.Remove(vm); }
+            }
+        }
+
+        private bool CheckUnsavedChanges()
+        {
+            if (mainPlaylist.UnsavedChanges)
+            {
+                MessageBoxResult result = MessageBox.Show("Do you want to save changes?", "Unsaved Changes", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    return SaveChanges(false);
+                }
+                else
+                {
+                    return result == MessageBoxResult.No;
+                }
+            }
+            return true;
+        }
+        private bool SaveChanges(bool _saveAs)
+        {
+            bool exists = mainPlaylist.FullPath != null && File.Exists(mainPlaylist.FullPath);
+            if (!exists || _saveAs)
+            {
+                _saveDialog.FileName = mainPlaylist.FullPath;
+                bool? result = _saveDialog.ShowDialog();
+                if (result != true) { return false; }
+                mainPlaylist.FullPath = _saveDialog.FileName;
+            }
+
+            try
+            {
+                WritePlaylist(mainPlaylist.Model);
+                mainPlaylist.UnsavedChanges = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error saving playlist", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            return true;
+        }
+
+        private static Playlist ReadPlaylist(string path)
+        {
+            var factory = new PlaylistItemFactory();
+            var playlist = new Playlist(path);
+            using (var reader = new PlaylistReader(path))
+            {
+                var itemPath = reader.NextPath();
+                while (itemPath != null)
+                {
+                    var item = factory.FromFile(itemPath);
+                    if (item != null)
+                    {
+                        playlist.Items.Add(item);
+                        playlist.RelativePaths = playlist.RelativePaths && reader.WasRelativePath;
+                    }
+                    itemPath = reader.NextPath();
+                }
+            }
+            return playlist;
+        }
+        private static void WritePlaylist(Playlist playlist)
+        {
+            using (var writer = new PlaylistWriter(playlist.FullPath, playlist.RelativePaths))
+            {
+                foreach (var item in playlist.Items)
+                {
+                    writer.Write(item);
+                }
             }
         }
     }

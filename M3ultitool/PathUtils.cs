@@ -24,7 +24,7 @@ namespace M3ultitool
 
             if (path.Scheme != to.Scheme) { return _path; }
             string relative = Uri.UnescapeDataString(to.MakeRelativeUri(path).ToString());
-            return relative.Replace('/', Path.DirectorySeparatorChar);
+            return "." + Path.DirectorySeparatorChar + relative.Replace('/', Path.DirectorySeparatorChar);
         }
     }
 }

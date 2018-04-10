@@ -12,7 +12,7 @@ namespace M3ultitool.Model
 
         public bool WasRelativePath { get { return _wasRelative; } }
 
-        public PlaylistReader(string path, bool _relative)
+        public PlaylistReader(string path)
         {
             _reader = new StreamReader(new FileStream(path, FileMode.Open));
             _relativeTo = PathUtils.WithTrailingSeperator(Path.GetDirectoryName(path));

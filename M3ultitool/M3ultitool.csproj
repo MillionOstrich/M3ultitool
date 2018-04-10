@@ -64,6 +64,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\PlaylistItemFactory.cs" />
+    <Compile Include="Model\PlaylistReader.cs" />
+    <Compile Include="Model\PlaylistWriter.cs" />
+    <Compile Include="PathUtils.cs" />
     <Compile Include="ViewModel\IViewModel.cs" />
     <Compile Include="ViewModel\PlaylistItemViewModel.cs" />
     <Compile Include="ViewModel\PlaylistViewModel.cs" />
