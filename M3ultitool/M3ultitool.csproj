@@ -67,10 +67,11 @@
     <Compile Include="Model\PlaylistReader.cs" />
     <Compile Include="Model\PlaylistWriter.cs" />
     <Compile Include="PathUtils.cs" />
+    <Compile Include="ViewModel\FileNameConverter.cs" />
     <Compile Include="ViewModel\IViewModel.cs" />
     <Compile Include="ViewModel\PlaylistItemViewModel.cs" />
     <Compile Include="ViewModel\PlaylistViewModel.cs" />
-    <Compile Include="ViewModel\AppTitleConverter.cs" />
+    <Compile Include="ViewModel\BoolStarConverter.cs" />
     <Compile Include="ViewModel\VMCollection.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

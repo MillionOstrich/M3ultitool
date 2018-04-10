@@ -14,7 +14,6 @@ namespace M3ultitool.ViewModel
         private Playlist _playlist;
         private VMCollection<PlaylistItem, PlaylistItemViewModel> _itemsProxy;
 
-        public static readonly string DefaultName = "untitled.m3u";
         public event PropertyChangedEventHandler PropertyChanged;
         public VMCollection<PlaylistItem, PlaylistItemViewModel> Items
         {

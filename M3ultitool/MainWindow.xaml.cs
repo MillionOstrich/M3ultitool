@@ -32,7 +32,6 @@ namespace M3ultitool
             InitializeComponent();
             _saveDialog = new SaveFileDialog()
             {
-                FileName = PlaylistViewModel.DefaultName,
                 DefaultExt = ".m3u",
                 Filter = "Playlists (.m3u)|*.m3u",
                 Title = "Save playlist"

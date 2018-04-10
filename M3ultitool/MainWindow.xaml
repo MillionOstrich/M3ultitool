@@ -8,10 +8,15 @@
         mc:Ignorable="d"
         Height="350" Width="525">
     <Window.Resources>
-        <ViewModel:AppTitleConverter x:Key="AppTitleConverter"/>
+        <ViewModel:BoolStarConverter x:Key="BoolStarConverter"/>
+        <ViewModel:FileNameConverter x:Key="FileNameConverter"/>
     </Window.Resources>
+
     <Window.Title>
-        <Binding Converter="{StaticResource AppTitleConverter}" Mode="OneWay"/>
+        <MultiBinding StringFormat="{}{0}{1}">
+            <Binding Converter="{StaticResource FileNameConverter}" Mode="OneWay" Path="FullPath" />
+            <Binding Converter="{StaticResource BoolStarConverter}" Mode="OneWay" Path="UnsavedChanges" />
+        </MultiBinding>
     </Window.Title>
 
     <Window.DataContext>
