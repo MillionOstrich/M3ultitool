@@ -30,6 +30,11 @@ namespace M3ultitool.ViewModel
             get { return _unsavedChanges; }
             set { _unsavedChanges = value; OnChanged(); }
         }
+        public bool RelativePaths
+        {
+            get { return _playlist.RelativePaths; }
+            set { _playlist.RelativePaths = value; OnChanged(); }
+        }
         public Playlist Model
         {
             get { return _playlist; }

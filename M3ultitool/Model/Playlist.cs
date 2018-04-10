@@ -8,6 +8,7 @@ namespace M3ultitool.Model
 {
     public class Playlist
     {
+        public bool RelativePaths { get; set; }
         public string FullPath { get; set; }
         public ICollection<PlaylistItem> Items { get; set; }
 
@@ -15,16 +16,19 @@ namespace M3ultitool.Model
         {
             FullPath = null;
             Items = new List<PlaylistItem>();
+            RelativePaths = true;
         }
         public Playlist(string path)
         {
             FullPath = path;
             Items = new List<PlaylistItem>();
+            RelativePaths = true;
         }
         public Playlist(string path, ICollection<PlaylistItem> items)
         {
             FullPath = path;
             Items = items ?? throw new ArgumentNullException();
+            RelativePaths = true;
         }
 
         public Playlist DeepCopy()
